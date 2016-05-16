@@ -17,6 +17,7 @@ import rospy
 
 
 class DDynamicReconfigure(ParameterGenerator):
+    """Dynamic reconfigure server that can be instanced directly."""
 
     def __init__(self, name=None):
         global id
@@ -50,7 +51,7 @@ class DDynamicReconfigure(ParameterGenerator):
                     self.all_level = self.all_level | param['level']
         return TypeClass(self.group.to_dict())
 
-    def register(self, name, description, default=None, min=None, max=None, edit_method=""):
+    def add_variable(self, name, description, default=None, min=None, max=None, edit_method=""):
         """Register variable, like gen.add() but deducting the type"""
         if type(default) == int:
             if edit_method == "":
@@ -64,32 +65,16 @@ class DDynamicReconfigure(ParameterGenerator):
         elif type(default) == bool:
             self.add(name, "bool", 0, description, default)
 
+        return default
+
+
+    def get_variable_names(self):
+        """Return the names of the dynamic reconfigure variables"""
+        names = []
+        for param in self.group.parameters:
+            names.append(param['name'])
+        return names
+
+
     def start(self, callback):
         self.dyn_rec_srv = Server(self.get_type(), callback)
-
-
-if __name__ == '__main__':
-    rospy.init_node('test_ddynrec')
-
-    print "Instancing DDynamicReconfigure"
-    ddynrec = DDynamicReconfigure()
-
-    ddynrec.register("decimal", "float/double variable", 0.0, -1.0, 1.0)
-    ddynrec.register("integer", "integer variable", 0, -1, 1)
-    ddynrec.register("bool", "bool variable", True)
-    ddynrec.register("string", "string variable", "string dynamic variable")
-    enum_method = ddynrec.enum([ ddynrec.const("Small",      "int", 0, "A small constant"),
-                       ddynrec.const("Medium",     "int", 1, "A medium constant"),
-                       ddynrec.const("Large",      "int", 2, "A large constant"),
-                       ddynrec.const("ExtraLarge", "int", 3, "An extra large constant")],
-                     "An enum example")
-    ddynrec.register("enumerate", "enumerate variable", 1, 0, 3, edit_method=enum_method)
-
-    print "Registered variables to be dynamic reconfigure"
-
-    def dyn_rec_callback(config, level):
-        rospy.loginfo("Received reconf call: " + str(config))
-        return config
-
-    ddynrec.start(dyn_rec_callback)
-    rospy.spin()
