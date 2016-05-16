@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package>
+  <name>ddynamic_reconfigure_python</name>
+  <version>0.0.0</version>
+  <description>The ddynamic_reconfigure_python package contains
+    a class to instantiate dynamic reconfigure servers on the fly
+    registering variables</description>
+
+  <maintainer email="sam.pfeiffer@pal-robotics.com">Sam Pfeiffer</maintainer>
+
+  <license>BSD</license>
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>dynamic_reconfigure</build_depend>
+  <build_depend>rospy</build_depend>
+  <run_depend>dynamic_reconfigure</run_depend>
+  <run_depend>rospy</run_depend>
+
+</package>
