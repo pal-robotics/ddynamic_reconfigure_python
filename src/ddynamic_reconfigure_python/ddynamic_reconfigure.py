@@ -77,4 +77,4 @@ class DDynamicReconfigure(ParameterGenerator):
 
 
     def start(self, callback):
-        self.dyn_rec_srv = Server(self.get_type(), callback)
+        self.dyn_rec_srv = Server(self.get_type(), callback, namespace=self.name)
