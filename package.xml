@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>ddynamic_reconfigure_python</name>
-  <version>0.0.0</version>
+  <version>0.0.1</version>
   <description>The ddynamic_reconfigure_python package contains
     a class to instantiate dynamic reconfigure servers on the fly
     registering variables</description>
